@@ -18,7 +18,54 @@ source("RatioPower.R")
 ```{r}
 N = 10000
 K = 10
+# derive the given Y mean array 
+Y = rep(0, K) 
+Y[2] = 1  # sparese treament with 1 level effect
 
-ratio_power(1,1,N,K, compute_pcombine, compute_power )
+ratio_power(Y, 0.1, 0.1, N, K, compute_pcombine, compute_power)
+
 ```
+
+```{r}
+start.time = Sys.time()
+
+power_matrix = matrix(0, ncol = 100, nrow = 100) 
+for (j in 1:100){ # Row
+  for (i in 1:100){ # Column
+    power_matrix[j,i] = ratio_power(Y, i*0.1, j*0.1, N, K, compute_pcombine, compute_power) 
+  }
+}
+end.time = Sys.time()
+time.taken = end.time - start.time
+time.taken
+```
+
+```{r}
+x =0.1* 1:nrow(power_matrix)
+y =0.1*  1:ncol(power_matrix)
+filled.contour(x, y, power_matrix, color = terrain.colors,
+               color.palette = colorRampPalette(
+                 c("blue", "green", "yellow","orange", "red")),
+               xlab="y1/sig1 ratio",ylab="sigk/sig1 ratio",
+               main="The Power of Ratio",
+               key.title = title(main="Power"))
+
+```
+
+```{r}
+start.time = Sys.time() # measure the running time
+
+power_matrix = matrix(0, ncol = 1000, nrow = 1000) 
+for (j in 1:1000){ # Row
+  for (i in 1:1000){ # Column
+    power_matrix[j,i] = ratio_power(Y, i*0.02, j*0.01, N, K, compute_pcombine, compute_power) 
+  }
+}
+end.time = Sys.time()
+
+time.taken = end.time - start.time
+time.taken
+```
+
+
 
