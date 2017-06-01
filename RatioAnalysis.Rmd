@@ -1,0 +1,24 @@
+---
+title: "RatioPowerAnalysis"
+author: "Xiaohui Li Yuxin Ma"
+date: "5/31/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r cars}
+setwd("/Users/lxh/Desktop/MultiArmTestWorkingDirectory")
+source("PvalueFunction.R")
+source("RatioPower.R")
+```
+
+```{r}
+N = 10000
+K = 10
+
+ratio_power(1,1,N,K, compute_pcombine, compute_power )
+```
+
