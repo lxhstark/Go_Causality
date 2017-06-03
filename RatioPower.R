@@ -49,19 +49,16 @@ sig_stat_gen = function(mean, K, ratio_type = "min", sig_type = "uniform"){
     }
   }
   # get the rest of sigmas apart from sig1
-  rk_rest = c(rk[1], rk[2:K])
-  rk_min_item = min(rk_rest) 
-  rk_max_item = max(rk_rest)
-  rk_median_item = median(rk_rest)
-  
+  rk_rest = c(rk[1], rk[3:K])
+
   if (ratio_type == "min"){
-    rk_item = rk_min_item
+    rk_item = min(rk_rest)
   }else{
     if (ratio_type == "max" ){
-    rk_item = rk_max_item  
+    rk_item = max(rk_rest)  
   }else{
    if (ratio_type == "median"){
-    rk_item = rk_median_item
+    rk_item = median(rk_rest)
   }else{
     print("Error: not choosing the existent type")
       }
