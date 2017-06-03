@@ -1,6 +1,6 @@
 # define a function that returns the power value given 
 # ratio r1 = y1/sig1 and ratio rk = sigk/sig1
-ratio_power = function(Y, r1, rk, N, K, compute_pcombine, compute_power, knum = 1, ktype = "homo", sig_general){
+ratio_power = function(Y, r1, rk, N, K, compute_pcombine, compute_power, knum = 1, ktype = "homo"){
   # the treatment level y1
   y1 = Y[2]
   # derive the standard deviation sig array 
@@ -14,7 +14,7 @@ ratio_power = function(Y, r1, rk, N, K, compute_pcombine, compute_power, knum = 
     }else{
     if (ktype == "min" | ktype == "max" | ktype == "median")
       {
-     sigk <- rk * y1/r1
+     sigk = rk * y1/r1
      }else{
        print("Error: not choosing the existent type")
       }
@@ -38,23 +38,35 @@ ratio_power = function(Y, r1, rk, N, K, compute_pcombine, compute_power, knum = 
 }
 
 # minimal sigma case 
-sig_stat_gen = function(mean, K, type = "min"){
-  sig_general = exp(rnorm(K-1, log(mean)))
-  sig_min_item = min(sig_general) 
-  sig_max_item = max(sig_general)
-  sig_median_item = median(sig_general)
-  if (type == "min"){
-    sig_item = sig_min_item
+sig_stat_gen = function(mean, K, ratio_type = "min", sig_type = "uniform"){
+  if (sig_type == "uniform"){
+    rk = runif(K, max = 2 * mean)
   }else{
-    if (type == "max" ){
-    sig_item = sig_max_item  
+    if (sig_type == "log-normal"){
+    rk = exp(rnorm(K, log(mean)))
+    }else{
+    print("Error: not choosing the existent type")
+    }
+  }
+  # get the rest of sigmas apart from sig1
+  rk_rest = c(rk[1], rk[2:K])
+  rk_min_item = min(rk_rest) 
+  rk_max_item = max(rk_rest)
+  rk_median_item = median(rk_rest)
+  
+  if (ratio_type == "min"){
+    rk_item = rk_min_item
   }else{
-   if (type == "median"){
-    sig_item = sig_median_item
+    if (ratio_type == "max" ){
+    rk_item = rk_max_item  
+  }else{
+   if (ratio_type == "median"){
+    rk_item = rk_median_item
   }else{
     print("Error: not choosing the existent type")
       }
     }
   }
-  return( list(item = sig_item,  sigk_rest = sig_general) )
+  return( list(rk_item = rk_item,  rk = rk) )
 }
+

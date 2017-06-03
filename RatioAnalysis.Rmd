@@ -93,11 +93,9 @@ for (j in 1:100){
   }
 }
 
-
-
 start.time = Sys.time()
 Lk = length(sig_min)
-power_matrix_min = matrix(0, nrow = 20, ncol = 100) 
+power_matrix_min = matrix(0, nrow = 20, ncol = Lk) 
 for (j in 1:Lk){ # Column
   sig_general_j = sig_general[j,]
   for (i in 1:20){ # Row

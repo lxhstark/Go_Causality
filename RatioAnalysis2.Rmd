@@ -79,29 +79,21 @@ filled.contour(x, y, power_matrix_hetero,
 
 ```
 
-## Minimal Case
+
+
+# Minimal case of uniformly distributed standard deviation
 ```{r}
-mean = 10
-sig_min = NULL
-sig_general = matrix(0, ncol = K-1 , nrow = 100)
-for (j in 1:100){
-  sig_combine = sig_stat_gen(j*0.01,K, type = "min")
-  if (sig_combine$item %in% sig_min){
-    }else{
-  sig_min[j] = sig_combine$item
-  sig_general[j,] = sig_combine$sigk_rest
-  }
-}
-
-
-
+n_r1 = 20
+n_rk = 50
 start.time = Sys.time()
-Lk = length(sig_min)
-power_matrix_min = matrix(0, nrow = 20, ncol = 100) 
-for (j in 1:Lk){ # Column
-  sig_general_j = sig_general[j,]
-  for (i in 1:20){ # Row
-    power_matrix_min[i,j] = ratio_power(Y, i*0.1, sig_min[j], N, K, compute_pcombine, compute_power, ktype = "min", sig_general = sig_general_j) 
+power_matrix_min_uni = matrix(0, nrow = n_r1, ncol = n_rk) 
+rk_item = NULL
+for (j in 1:n_rk){ # Column
+  statis = sig_stat_gen( j*0.1, K, ratio_type = "min", sig_type = "uniform")
+  rk = statis$rk
+  rk_item[j] = statis$rk_item 
+  for (i in 1:n_r1){ # Row
+    power_matrix_min_uni[i,j] = ratio_power(Y, i*0.1, rk, N, K, compute_pcombine, compute_power, ktype = "min")
   }
 }
 end.time = Sys.time()
@@ -111,36 +103,23 @@ time.taken_min
 
 ```
 
-
 ```{r}
-start.time = Sys.time()
-power_matrix_min = matrix(0, nrow = 20, ncol = 20) 
-rk_min <- NULL
-for (j in 1:20){ # Column
-  rk <- runif(10)
-  rk_min[j] <- min(rk)
-  for (i in 1:20){ # Row
-    power_matrix_min[j,i] = ratio_power(Y, i*0.01, rk, N, K, compute_pcombine, compute_power, ktype = "min")
-  }
-}
-end.time = Sys.time()
-time.taken_min = end.time - start.time
-time.taken_min
-
-power_matrix_min <- cbind(power_matrix_min, rk_min)
-power_matrix_min <- power_matrix_min[order(power_matrix_min[, 21]),]
-x =0.1* 1:nrow(power_matrix_min)
-y <- sort(rk_min)
-filled.contour(x, y, power_matrix_min[,1:20], color = terrain.colors,
+power_matrix_min_uni = rbind(power_matrix_min_uni, rk_item)
+power_matrix_min_uni = power_matrix_min[,order(power_matrix_min_uni[n_r1 + 1,])]
+x =0.1 * 1:nrow(power_matrix_min_uni)
+y = 0.2 * sort(rk_item)
+filled.contour(x, y, power_matrix_min_uni[1:n_r1,], 
                color.palette = colorRampPalette(
                  c("blue", "green", "yellow","orange", "red")),
                xlab="y1/sig1 ratio",ylab="sigk/sig1 ratio",
                main="The Power of Ratio",
                key.title = title(main="Power"))
-
 ```
 
 
+# Minimal case of log-normal distributed standard deviation
+
+# Maximal case of log-normal distributed standard deviation
 
 
 
