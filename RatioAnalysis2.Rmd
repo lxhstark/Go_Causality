@@ -127,9 +127,11 @@ end.time = Sys.time()
 time.taken_min = end.time - start.time
 time.taken_min
 
+power_matrix_min <- cbind(power_matrix_min, rk_min)
+power_matrix_min <- power_matrix_min[order(power_matrix_min[, 21]),]
 x =0.1* 1:nrow(power_matrix_min)
-y =0.1* 1:ncol(power_matrix_min)
-filled.contour(x, y, power_matrix, color = terrain.colors,
+y <- sort(rk_min)
+filled.contour(x, y, power_matrix_min[,1:20], color = terrain.colors,
                color.palette = colorRampPalette(
                  c("blue", "green", "yellow","orange", "red")),
                xlab="y1/sig1 ratio",ylab="sigk/sig1 ratio",
