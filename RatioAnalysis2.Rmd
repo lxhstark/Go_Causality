@@ -112,4 +112,37 @@ time.taken_min
 ```
 
 
+```{r}
+start.time = Sys.time()
+power_matrix_min = matrix(0, nrow = 20, ncol = 20) 
+rk_min <- NULL
+for (j in 1:20){ # Column
+  rk <- runif(10)
+  rk_min[j] <- min(rk)
+  for (i in 1:20){ # Row
+    power_matrix_min[j,i] = ratio_power(Y, i*0.01, rk, N, K, compute_pcombine, compute_power, ktype = "min")
+  }
+}
+end.time = Sys.time()
+time.taken_min = end.time - start.time
+time.taken_min
+
+x =0.1* 1:nrow(power_matrix_min)
+y =0.1* 1:ncol(power_matrix_min)
+filled.contour(x, y, power_matrix, color = terrain.colors,
+               color.palette = colorRampPalette(
+                 c("blue", "green", "yellow","orange", "red")),
+               xlab="y1/sig1 ratio",ylab="sigk/sig1 ratio",
+               main="The Power of Ratio",
+               key.title = title(main="Power"))
+
+```
+
+
+
+
+
+
+
+
 
