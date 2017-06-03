@@ -14,9 +14,7 @@ ratio_power = function(Y, r1, rk, N, K, compute_pcombine, compute_power, knum = 
     }else{
     if (ktype == "min" | ktype == "max" | ktype == "median")
       {
-     sigk[1] = sig_general[1]
-     sigk[3:K] = sig_general[2:K-1]
-    
+     sigk <- rk * y1/r1
      }else{
        print("Error: not choosing the existent type")
       }
