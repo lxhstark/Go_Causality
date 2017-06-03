@@ -8,18 +8,13 @@ ratio_power = function(Y, r1, rk, N, K, compute_pcombine, compute_power, knum = 
   if (ktype == "homo"){
     sigk = rep(rk* y1/r1, K)
   }else{
-    if (ktype == "normal"){
-    ex_mean = log(y1 * rk/r1)
-    sigk = exp(rnorm(K, ex_mean))
-    }else{
-    if (ktype == "min" | ktype == "max" | ktype == "median")
-      {
+    if (ktype == "hetero"){
      sigk = rk * y1/r1
      }else{
        print("Error: not choosing the existent type")
       }
-     }
     }
+    
   sigk[2] = y1/r1 
 
   # compute the corresponding p_power 
