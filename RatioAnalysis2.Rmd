@@ -105,8 +105,8 @@ time.taken_min
 
 ```{r}
 power_matrix_min_uni = rbind(power_matrix_min_uni, rk_item)
-power_matrix_min_uni = power_matrix_min[,order(power_matrix_min_uni[n_r1 + 1,])]
-x =0.1 * 1:nrow(power_matrix_min_uni)
+power_matrix_min_uni = power_matrix_min_uni[,order(power_matrix_min_uni[n_r1 + 1,])]
+x =0.1 * 1 : (nrow(power_matrix_min_uni)-1)
 y = 0.2 * sort(rk_item)
 filled.contour(x, y, power_matrix_min_uni[1:n_r1,], 
                color.palette = colorRampPalette(
@@ -118,6 +118,40 @@ filled.contour(x, y, power_matrix_min_uni[1:n_r1,],
 
 
 # Minimal case of log-normal distributed standard deviation
+```{r}
+n_r1 = 20
+n_rk = 50
+start.time = Sys.time()
+power_matrix_min_ln = matrix(0, nrow = n_r1, ncol = n_rk) 
+rk_item = NULL
+for (j in 1:n_rk){ # Column
+  statis = sig_stat_gen( j*0.1, K, ratio_type = "min", sig_type = "log-normal")
+  rk = statis$rk
+  rk_item[j] = statis$rk_item 
+  for (i in 1:n_r1){ # Row
+    power_matrix_min_ln[i,j] = ratio_power(Y, i*0.1, rk, N, K, compute_pcombine, compute_power, ktype = "hetero")
+  }
+}
+end.time = Sys.time()
+time.taken_min_ln = end.time - start.time
+time.taken_min_ln
+```
+
+
+```{r}
+power_matrix_min_ln = rbind(power_matrix_min_ln, rk_item)
+power_matrix_min_ln = power_matrix_min_uni[,order(power_matrix_min_ln[n_r1 + 1,])]
+x =0.1 * 1 : (nrow(power_matrix_min_ln)-1)
+y = 0.2 * sort(rk_item)
+filled.contour(x, y, power_matrix_min_ln[1:n_r1,], 
+               color.palette = colorRampPalette(
+                 c("blue", "green", "yellow","orange", "red")),
+               xlab="y1/sig1 ratio",ylab="sigk/sig1 ratio",
+               main="The Power of Ratio",
+               key.title = title(main="Ln Power"))
+```
+
+
 
 # Maximal case of log-normal distributed standard deviation
 

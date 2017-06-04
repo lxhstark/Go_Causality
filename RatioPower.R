@@ -11,7 +11,7 @@ ratio_power = function(Y, r1, rk, N, K, compute_pcombine, compute_power, knum = 
     if (ktype == "hetero"){
      sigk = rk * y1/r1
      }else{
-       print("Error: not choosing the existent type")
+       print("Error: not choosing the existent ktype-type")
       }
     }
     
@@ -40,7 +40,7 @@ sig_stat_gen = function(mean, K, ratio_type = "min", sig_type = "uniform"){
     if (sig_type == "log-normal"){
     rk = exp(rnorm(K, log(mean)))
     }else{
-    print("Error: not choosing the existent type")
+    print("Error: not choosing the existent sig-type")
     }
   }
   # get the rest of sigmas apart from sig1
@@ -55,10 +55,14 @@ sig_stat_gen = function(mean, K, ratio_type = "min", sig_type = "uniform"){
    if (ratio_type == "median"){
     rk_item = median(rk_rest)
   }else{
+    if (ratio_type == "mean"){
+    rk_item = mean
+    }else{
     print("Error: not choosing the existent type")
       }
     }
   }
+}
   return( list(rk_item = rk_item,  rk = rk) )
 }
 
