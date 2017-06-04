@@ -1,0 +1,100 @@
+---
+title: "PowerKAnalysis"
+author: "Xiaohui Li Yuxin Ma"
+date: "6/4/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("PvalueFunction.R")
+source("RatioPower.R")
+```
+
+```{r}
+N = 10000
+```
+
+
+
+# Test the power shape for effective size
+##k = 10 
+```{r}
+K = 10
+Y = rep(0, K)
+Y_j = Y
+power_10 = NULL
+for (j in 1:100){
+  Y_j[2] = 0.01 * j
+  r1_j = Y_j[2] /1
+  power_10[j] = ratio_power(Y_j, r1_j , 1, N, K, compute_pcombine, compute_power)
+}
+plot(seq(0.01,1,0.01), power_10, type = "l", xlab = "Y1_value", main = "Power with effective Y1 given K = 10" )
+
+
+```
+
+##k = 50
+```{r}
+K = 50
+Y = rep(0, K)
+Y_j = Y
+power_50 = NULL
+for (j in 1:100){
+  Y_j[2] = 0.01 * j
+  r1_j = Y_j[2] /1
+  power_50[j] = ratio_power(Y_j, r1_j , 1, N, K, compute_pcombine, compute_power)
+}
+plot(seq(0.01,1,0.01), power_50, type = "l", xlab = "Y1_value", main = "Power with effective Y1 given K = 50" )
+```
+
+## K = 100
+```{r}
+K = 100
+Y = rep(0, K)
+Y_j = Y
+power_100 = NULL
+for (j in 1:100){
+  Y_j[2] = 0.01 * j
+  r1_j = Y_j[2] /1
+  power_100[j] = ratio_power(Y_j, r1_j , 1, N, K, compute_pcombine, compute_power)
+}
+plot(seq(0.01,1,0.01), power_100, type = "l", xlab = "Y1_value", main = "Power with effective Y1 given K = 100" )
+```
+
+
+# Caculate the power with K increasing 
+## r1 = 1
+```{r}
+power_K = NULL
+for (k in 2:100){
+  Y_k = rep(0,k)
+  Y_k[2] = 1
+  power_K[k] = ratio_power(Y_k , 1 , 1, N, k, compute_pcombine, compute_power)
+}
+
+plot(seq(2,101,1), power_K, type = "l", xlab = "K size", main = "Power with k size given r1 = 1" )
+```
+
+## r1 = 2
+```{r}
+power_K = NULL
+for (k in 2:100){
+  Y_k = rep(0,k)
+  Y_k[2] = 1
+  power_K[k] = ratio_power(Y_k , 0.5 , 1, N, k, compute_pcombine, compute_power)
+}
+
+plot(seq(2,101,1), power_K, type = "l", xlab = "K size", main = "Power with k size" )
+```
+
+
+# 80% Power ratio quantile for treatment size K
+```{r}
+
+```
+
+
+
+
+

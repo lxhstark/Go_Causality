@@ -3,6 +3,10 @@
 ratio_power = function(Y, r1, rk, N, K, compute_pcombine, compute_power, knum = 1, ktype = "homo"){
   # the treatment level y1
   y1 = Y[2]
+  
+  # derive the null mean Y_null
+  Y_null = rep(0, K)
+  
   # derive the standard deviation sig array 
   sigk = NULL
   if (ktype == "homo"){
@@ -20,12 +24,11 @@ ratio_power = function(Y, r1, rk, N, K, compute_pcombine, compute_power, knum = 
   # compute the corresponding p_power 
   power = NULL
   # derive the critical value p_cv for null hypothesis
-  p_cv = quantile(compute_pcombine(Y, sigk, N, K), 0.05)
+  p_cv = quantile(compute_pcombine(Y_null, sigk, N, K), 0.05)
   # get the sparse effect 
-  Y_treat = Y
-  Y_treat[2] = 1
+  
   for (j in 1:knum){
-    power[j] = compute_power(Y_treat, sigk, N, K, p_cv)
+    power[j] = compute_power(Y, sigk, N, K, p_cv)
   }
   avg_power = mean(power)
 
